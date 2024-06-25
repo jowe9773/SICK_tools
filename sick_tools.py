@@ -113,7 +113,10 @@ class SickTools:
         difference[np.isnan(difference)] = no_data_value
         band.WriteArray(difference)
 
-        mask = difference > mask_threshold and difference < -mask_threshold
+        mask_pos = difference > mask_threshold
+        mask_neg = difference < -mask_threshold
+
+        mask = mask_pos | mask_neg
 
         # Create an in-memory raster dataset
         driver = gdal.GetDriverByName('MEM')
