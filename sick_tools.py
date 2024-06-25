@@ -30,7 +30,7 @@ class SickTools:
 
         grid_string = file[grid_inds[-1]:xy_inds[0]]
         grid_string = grid_string.strip().replace('(','').replace(')','')
-        grid = np.asarray(grid_string.split('x')).astype('float')
+        #grid = np.asarray(grid_string.split('x')).astype('float')
 
         xy_string = file[xy_inds[-1]:]
         xy_string = xy_string.strip().replace('(','').replace(')','').replace('_TopoData.DAT','')
