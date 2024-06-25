@@ -53,5 +53,18 @@ for first_level_dir in os.listdir(directory):
                     outdir = out + "/" + first_level_dir
                     os.makedirs(outdir, exist_ok=True)
 
+                    #check to see if these files have already been processed
+                    out_names = before.split("/")[-1].split("_")[:3]
+                    before_fn_out = outdir + "/" + out_names[0] + "_" + out_names[1] + "_" + out_names[2] + '.tif'
+                    out_names = after.split("/")[-1].split("_")[:3]
+                    after_fn_out = outdir + "/" + out_names[0] + "_" + out_names[1] + "_" + out_names[2] + '.tif'
+                    out_names = after.split("/")[-1].split("_")[:3]
+                    wood_fn_out = outdir + "/" + out_names[0] + "_" + out_names[1] + "_woodmap.tif"
+
+                    if os.path.exists(before_fn_out) and os.path.exists(after_fn_out) and os.path.exists(wood_fn_out):
+                        print(second_level_dir + " has already been processed. Skipping ahead to the next experiment.")
+                        continue
+                
+
                     #Now that we have the before and after files, we can create pre, post, and wood map DEMs
                     ew.extract_wood(before, after, ESPG, outdir)
