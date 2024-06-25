@@ -65,6 +65,5 @@ for first_level_dir in os.listdir(directory):
                         print(second_level_dir + " has already been processed. Skipping ahead to the next experiment.")
                         continue
                 
-
                     #Now that we have the before and after files, we can create pre, post, and wood map DEMs
                     ew.extract_wood(before, after, ESPG, outdir)
