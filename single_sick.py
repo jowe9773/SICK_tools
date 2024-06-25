@@ -5,12 +5,12 @@ import os
 from pathlib import Path
 from sick_tools import SickTools
 from file_managers import FileManagers
-from extract_wood import ExtractWood
+from process_sick_data import ProcessSICKData
 
 #instantiate classes
 fm = FileManagers()
 st = SickTools()
-ew = ExtractWood()
+psd = ProcessSICKData()
 
 #load directory containing data for each experiment organized into individual directories
 directory = fm.load_dn("Choose folder containing data organized by experiment")
@@ -44,4 +44,4 @@ for subdir, _, files in os.walk(directory):
 
 
     #Now that we have the before and after files, we can create pre, post, and wood map DEMs
-    ew.extract_wood(before, after, ESPG, out)
+    psd.process_sick_data(before, after, ESPG, out)

@@ -8,11 +8,11 @@ from file_managers import FileManagers
 fm = FileManagers()
 st = SickTools()
 
-class ExtractWood:
+class ProcessSICKData:
     def __init__(self):
         print("initialized")
 
-    def extract_wood(self, before, after, ESPG, out):
+    def process_sick_data(self, before, after, ESPG, out):
 
         ##DO THE BEFORE TOPO
         #load the sick file
