@@ -22,21 +22,26 @@ out = fm.load_dn("select directory to store outputs in")
 ESPG = 32615
 
 for subdir, _, files in os.walk(directory):
-    before = None
-    after = None
+    BEFORE = None
+    AFTER = None
+    REMOBILIZATION = None
     for file in files:
         filepath = os.path.join(subdir, file)
 
         # if a particular filepath is the one we are looking for, then we will make it the before or after file
         if ("_nowood" in filepath or "_pre" in filepath) and ".DAT" in filepath:
-            before = Path(filepath).as_posix()
+            BEFORE = Path(filepath).as_posix()
             print("Before was created!")
 
         if ("_wood" in filepath or "_post" in filepath) and ".DAT" in filepath:
-            after = Path(filepath).as_posix()
+            AFTER = Path(filepath).as_posix()
             print("After was created!")
 
-    if before is None or after is None:
+        if "_remobilization" in filepath and ".DAT" in filepath:
+            REMOBILIZATION =  Path(filepath).as_posix()
+            print("Remobilization was created!")
+
+    if BEFORE is None or AFTER is None:
         print("missing before or after data, check files for " + directory)
         continue
 
@@ -44,4 +49,7 @@ for subdir, _, files in os.walk(directory):
 
 
     #Now that we have the before and after files, we can create pre, post, and wood map DEMs
-    psd.process_sick_data(before, after, ESPG, out)
+    psd.process_sick_data(BEFORE, AFTER, ESPG, out)
+
+    if REMOBILIZATION is not None:
+        psd.process_sick_data(AFTER, REMOBILIZATION, ESPG, out, remobilization = True)    

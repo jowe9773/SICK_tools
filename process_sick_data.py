@@ -12,7 +12,7 @@ class ProcessSICKData:
     def __init__(self):
         print("initialized")
 
-    def process_sick_data(self, before, after, ESPG, out):
+    def process_sick_data(self, before, after, ESPG, out, remobilization = False):
 
         ##DO THE BEFORE TOPO
         #load the sick file
@@ -30,6 +30,11 @@ class ProcessSICKData:
         ##Now create the wood map
         woodmap = st.extract_wood(interpolated_topo_before, interpolated_topo_after, 5, 2650, 4)
 
-        st.export_topo_as_geotiff(before, ESPG, out, interpolated_topo_before, sick_before)
-        st.export_topo_as_geotiff(after, ESPG, out, interpolated_topo_after, sick_after)
-        st.export_topo_as_geotiff(after, ESPG, out, woodmap, sick_after, wood = True)
+        if remobilization is False:
+            st.export_topo_as_geotiff(before, ESPG, out, interpolated_topo_before, sick_before)
+            st.export_topo_as_geotiff(after, ESPG, out, interpolated_topo_after, sick_after)
+            st.export_topo_as_geotiff(after, ESPG, out, woodmap, sick_after, wood = True)
+
+        if remobilization is True:
+            st.export_topo_as_geotiff(after, ESPG, out, interpolated_topo_after, sick_after)
+            st.export_topo_as_geotiff(after, ESPG, out, woodmap, sick_after, remobilization = True)
