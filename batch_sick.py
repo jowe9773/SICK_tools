@@ -1,4 +1,5 @@
 #batch_sick.py
+"""script to process sick data from multiple experiments"""
 
 #import neccesary modules and packages
 import os
@@ -67,7 +68,7 @@ for first_level_dir in os.listdir(directory):
 
                     wood_fn_out = outdir + "/" + out_names[0] + "_" + out_names[1] + "_woodmap.tif"
                     remobilization_fn_out = outdir + "/" + out_names[0] + "_" + out_names[1] + "remobilization.tif"
-                    
+
                     if os.path.exists(before_fn_out) and os.path.exists(after_fn_out) and os.path.exists(wood_fn_out) and os.path.exists(remobilization_fn_out):
                         print(second_level_dir + " has already been processed. Skipping ahead to the next experiment.")
                         continue

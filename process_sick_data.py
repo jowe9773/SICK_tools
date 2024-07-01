@@ -9,10 +9,13 @@ fm = FileManagers()
 st = SickTools()
 
 class ProcessSICKData:
+    """class that gets the sick tools together to process the sick data"""
     def __init__(self):
         print("initialized")
 
     def process_sick_data(self, before, after, ESPG, out, remobilization = False):
+        """method that processes a before, an after scan and a difference map (either difference 
+        between before and after remobilization flood or before and after adding wood) """
 
         ##DO THE BEFORE TOPO
         #load the sick file
