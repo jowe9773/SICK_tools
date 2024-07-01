@@ -15,6 +15,7 @@ class SickTools:
         print("initialized")
 
     def load_sick_file(self, filename):
+        """method for taking a .DAT file and turning it into a usable numpy array"""
 
         file = filename.split('/')[-1]
         # Open the binary file
@@ -56,8 +57,9 @@ class SickTools:
         print(f'Number of Datapoints: {topo.flatten().shape}')
 
         return topo, xmin, xmax, ymin, ymax
-    
+
     def fill_nulls(self, topo):
+        """method for filling areas of nodata within a numpy array"""
 
         #Define the dimensions and data type
         rows, cols = topo.shape
@@ -92,12 +94,13 @@ class SickTools:
         print("Interpolation complete.")
 
         return interpolated_topo
-    
-    
+
+
     def extract_wood(self, topo1, topo2, mask_threshold, sieve_threshold, connectedness):
 
+        """method for finding areas of change (presence or movement of wood)"""
         #difference the before and after
-        difference = topo2 - topo1 
+        difference = topo2 - topo1
 
         # Create an in-memory raster dataset
         rows, cols = difference.shape
@@ -141,12 +144,14 @@ class SickTools:
         return wood
 
 
-    def export_topo_as_geotiff(self, filename, projection_num, out_directory, topo, sick, wood = False):
+    def export_topo_as_geotiff(self, filename, projection_num, out_directory, topo, sick, wood = False, remobilization = False):
+        """method for exporting a particular scan or map as a geotiff file"""
+
         xmin = sick[1]
         xmax = sick[2]
         ymin = sick[3]
         ymax = sick[4]
-        
+
         proj = osr.SpatialReference()
         proj.ImportFromEPSG(projection_num)
 
@@ -155,11 +160,15 @@ class SickTools:
         datout[np.isnan(datout)] = -9999
         driver = gdal.GetDriverByName('GTiff')
         cols,rows = np.shape(datout)
-        
+
         out_names = filename.split("/")[-1].split("_")[:3]
 
-        if wood == True:
+        if wood is True:
             output_filename = out_directory + "/" + out_names[0] + "_" + out_names[1] + "_woodmap.tif"
+            print(output_filename)
+
+        elif remobilization is True:
+            output_filename = out_directory + "/" + out_names[0] + "_" + out_names[1] + "_remobilizationmap.tif"
             print(output_filename)
 
         else:
