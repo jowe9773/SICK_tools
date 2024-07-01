@@ -1,5 +1,4 @@
 #sick_tools.py
-
 """This file contains all of the SICK processing functions that can be accessed from the other scripts in the folder."""
 
 #import neccesary packages
@@ -25,7 +24,7 @@ class SickTools:
 
         data[data==-9999] = np.nan
 
-        # Get Grid start and end from filename: 
+        # Get Grid start and end from filename:
         grid_inds = [file.find('Grid='),file.find('Grid=')+len('Grid=')]
         xy_inds   = [file.find('XY='),file.find('XY=')+len('XY=')]
 
@@ -46,7 +45,7 @@ class SickTools:
         ymin = xy_start[1]
         ymax = xy_end[1]
 
-        # Read the Corresponding XML File: 
+        # Read the Corresponding XML File:
         xml_filename = filename[0:-4]+'.xml'
         xml_data = ET.parse(xml_filename)
         root = xml_data.getroot()
@@ -129,10 +128,10 @@ class SickTools:
 
         # Apply the sieve filter to remove small regions
         gdal.SieveFilter(
-            srcBand = masked_band, 
-            maskBand = None, 
-            dstBand = masked_band, 
-            threshold = sieve_threshold, 
+            srcBand = masked_band,
+            maskBand = None,
+            dstBand = masked_band,
+            threshold = sieve_threshold,
             connectedness = connectedness)
 
         # Read the sieved data back into a NumPy array

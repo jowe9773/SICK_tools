@@ -32,21 +32,26 @@ for first_level_dir in os.listdir(directory):
                 print(second_level_path)
                 # Iterate through the files in the second level directories
                 for subdir, _, files in os.walk(second_level_path):
-                    before = None
-                    after = None
+                    BEFORE = None
+                    AFTER = None
+                    REMOBILIZATION = None
                     for file in files:
                         filepath = os.path.join(subdir, file)
 
                         # if a particular filepath is the one we are looking for, then we will make it the before or after file
                         if ("_nowood" in filepath or "_pre" in filepath) and ".DAT" in filepath:
-                            before = Path(filepath).as_posix()
+                            BEFORE = Path(filepath).as_posix()
                             print("Before was created!")
 
                         if ("_wood" in filepath or "_post" in filepath) and ".DAT" in filepath:
-                            after = Path(filepath).as_posix()
+                            AFTER = Path(filepath).as_posix()
                             print("After was created!")
+                        
+                        if "remobilization" in filepath and ".DAT" in filepath:
+                            REMOBILIZATION = Path(filepath).as_posix()
+                            print("Remobilization was created!")
 
-                    if before is None or after is None:
+                    if BEFORE is None or AFTER is None:
                         print("missing before or after data, check files for " + second_level_dir)
                         continue
 
@@ -54,11 +59,11 @@ for first_level_dir in os.listdir(directory):
                     os.makedirs(outdir, exist_ok=True)
 
                     #check to see if these files have already been processed
-                    out_names = before.split("/")[-1].split("_")[:3]
+                    out_names = BEFORE.split("/")[-1].split("_")[:3]
                     before_fn_out = outdir + "/" + out_names[0] + "_" + out_names[1] + "_" + out_names[2] + '.tif'
-                    out_names = after.split("/")[-1].split("_")[:3]
+                    out_names = BEFORE.split("/")[-1].split("_")[:3]
                     after_fn_out = outdir + "/" + out_names[0] + "_" + out_names[1] + "_" + out_names[2] + '.tif'
-                    out_names = after.split("/")[-1].split("_")[:3]
+                    out_names = BEFORE.split("/")[-1].split("_")[:3]
                     wood_fn_out = outdir + "/" + out_names[0] + "_" + out_names[1] + "_woodmap.tif"
 
                     if os.path.exists(before_fn_out) and os.path.exists(after_fn_out) and os.path.exists(wood_fn_out):
@@ -66,4 +71,4 @@ for first_level_dir in os.listdir(directory):
                         continue
                 
                     #Now that we have the before and after files, we can create pre, post, and wood map DEMs
-                    psd.process_sick_data(before, after, ESPG, outdir)
+                    psd.process_sick_data(BEFORE, AFTER, ESPG, outdir)
